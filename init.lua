@@ -257,6 +257,23 @@ rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
+  --
+  {
+    'toppair/peek.nvim',
+    event = { 'VeryLazy' },
+    build = 'deno task --quiet build:fast',
+    config = function()
+      require('peek').setup {
+        app = 'browser', -- Defers to the OS default browser (Firefox)
+
+        -- Alternatively, if your OS MIME types are misconfigured, force Firefox directly:
+        -- app = 'firefox',
+        -- app = { 'firefox', '--new-window' },
+      }
+      vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+      vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
+    end,
+  },
   { 'NMAC427/guess-indent.nvim', opts = {} },
 
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
